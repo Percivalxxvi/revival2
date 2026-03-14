@@ -11,15 +11,6 @@ const Navbar = () => {
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef(null);
 
-  // const [token, setToken] = useState(null);
-  // const token = localStorage.getItem("access_token");
-  // const [role, setRole] = useState(
-  //   localStorage.getItem("user_role") || "users",
-  // );
-  // const [username, setUsername] = useState(
-  //   localStorage.getItem("user_name") || "User",
-  // );
-
   const [token, setToken] = useState(localStorage.getItem("access_token"));
   const [role, setRole] = useState(localStorage.getItem("user_role") || "user");
   const [username, setUsername] = useState(
@@ -157,6 +148,14 @@ const Navbar = () => {
 
                 {moreOpen && (
                   <div className="absolute top-10 left-0 bg-white shadow-lg rounded-md py-2 w-44 border border-gray-100">
+                    {token && (
+                      <a
+                        href="/prayers"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                      >
+                        Prayers
+                      </a>
+                    )}
                     {token && (
                       <a
                         href="/gallery"
@@ -314,6 +313,7 @@ const Navbar = () => {
 
               {dropdownOpen && (
                 <div className="flex flex-col ml-4 mt-2 gap-2">
+                  {token && <a href="/prayers">Prayers</a>}
                   {token && <a href="/gallery">Gallery</a>}
                   {token && <a href="/events">Events</a>}
                   {/* <a href="/ministries">Ministries</a> */}

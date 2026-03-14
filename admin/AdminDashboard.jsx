@@ -36,7 +36,7 @@ const ManagePosts = () => {
 
   const fetchPosts = async () => {
     try {
-      const res = await fetch("http://localhost:8000/posts", {
+      const res = await fetch("https://revival-api-rzf5.onrender.com/posts", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -51,7 +51,7 @@ const ManagePosts = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this post?")) return;
     try {
-      await fetch(`http://localhost:8000/admin/posts/${id}`, {
+      await fetch(`https://revival-api-rzf5.onrender.com/admin/posts/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -64,7 +64,7 @@ const ManagePosts = () => {
   const handleEditSave = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8000/admin/posts/${editingPost._id}`,
+        `https://revival-api-rzf5.onrender.com/admin/posts/${editingPost._id}`,
         {
           method: "PUT",
           headers: {
@@ -91,14 +91,17 @@ const ManagePosts = () => {
 
   const handleCreate = async () => {
     try {
-      const res = await fetch("http://localhost:8000/admin/posts", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      const res = await fetch(
+        "https://revival-api-rzf5.onrender.com/admin/posts",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title: newTitle, content: newContent }),
         },
-        body: JSON.stringify({ title: newTitle, content: newContent }),
-      });
+      );
       const data = await res.json();
       if (res.ok) {
         setPosts((p) => [data, ...p]);
@@ -377,9 +380,12 @@ const ManageUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:8000/admin/users", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        "https://revival-api-rzf5.onrender.com/admin/users",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       const data = await res.json();
       if (res.ok) setUsers(data.users ?? data);
     } catch (err) {
@@ -392,7 +398,7 @@ const ManageUsers = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this user?")) return;
     try {
-      await fetch(`http://localhost:8000/admin/users/${id}`, {
+      await fetch(`https://revival-api-rzf5.onrender.com/admin/users/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -406,7 +412,7 @@ const ManageUsers = () => {
     const newRole = user.role === "admin" ? "user" : "admin";
     try {
       const res = await fetch(
-        `http://localhost:8000/admin/users/${user._id}/role`,
+        `https://revival-api-rzf5.onrender.com/admin/users/${user._id}/role`,
         {
           method: "PUT",
           headers: {
@@ -596,12 +602,15 @@ const DashboardOverview = ({ onNavigate }) => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const res = await fetch("http://localhost:8000/admin/dashboard", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+        const res = await fetch(
+          "https://revival-api-rzf5.onrender.com/admin/dashboard",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
           },
-        });
+        );
         const data = await res.json();
         if (res.ok) {
           setStats({ posts: data.total_posts, users: data.total_users });
@@ -795,7 +804,7 @@ const AdminDashboard = () => {
 
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 text-red-400 hover:text-red-300 transition px-3 py-2 mt-4"
+          className="flex items-center gap-3 text-red-400 hover:text-red-300 transition px-3 py-2 mt-4 cursor-pointer"
         >
           <LogOut size={20} /> Logout
         </button>
@@ -811,7 +820,10 @@ const AdminDashboard = () => {
           <h2 className="font-bold text-lg">
             {navItems.find((i) => i.id === view)?.label ?? "Admin Panel"}
           </h2>
-          <button onClick={handleLogout} className="text-red-400 p-1">
+          <button
+            onClick={handleLogout}
+            className="text-red-400 p-1 cursor-pointer"
+          >
             <LogOut size={20} />
           </button>
         </header>

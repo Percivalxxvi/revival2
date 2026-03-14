@@ -30,16 +30,19 @@ const VerifyOTP = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/verify-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://revival-api-rzf5.onrender.com/verify-otp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            otp: otp,
+          }),
         },
-        body: JSON.stringify({
-          user_id: userId,
-          otp: otp,
-        }),
-      });
+      );
 
       const data = await response.json();
 

@@ -44,7 +44,9 @@ const AllPosts = ({ isAdmin, token }) => {
         search: debouncedSearch,
       }).toString();
 
-      const res = await fetch(`http://localhost:8000/posts?${query}`);
+      const res = await fetch(
+        `https://revival-api-rzf5.onrender.com/posts?${query}`,
+      );
       const data = await res.json();
       const fetched = data.posts ?? [];
       setPosts(fetched);
@@ -66,10 +68,13 @@ const AllPosts = ({ isAdmin, token }) => {
     e.stopPropagation();
     if (!window.confirm("Delete this sermon?")) return;
     try {
-      const res = await fetch(`http://localhost:8000/admin/posts/${postId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `https://revival-api-rzf5.onrender.com/admin/posts/${postId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       if (res.ok) fetchPosts();
     } catch (err) {
       console.error(err);

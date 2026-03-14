@@ -18,9 +18,12 @@ const PostDetails = ({ token }) => {
 
   const fetchPost = async (postId) => {
     try {
-      const res = await fetch(`http://localhost:8000/posts/${postId}`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      });
+      const res = await fetch(
+        `https://revival-api-rzf5.onrender.com/posts/${postId}`,
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        },
+      );
       const data = await res.json();
       if (res.ok) setPost(data.post ?? data);
     } catch (err) {

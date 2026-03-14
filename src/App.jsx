@@ -14,6 +14,8 @@ import Contact from "../pages/Contact";
 import Sermons from "../pages/Sermons";
 import SermonDetails from "../pages/SermonDetails";
 import Gallery from "../pages/Gallery";
+import Events from "../pages/Events";
+import PrayerRequest from "../pages/Prayers";
 
 import Navbar from "../components/Navbar";
 
@@ -60,6 +62,8 @@ const App = () => {
           <Route path="/sermons" element={<Sermons />} />
           <Route path="/posts/:id" element={<SermonDetails />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/prayers" element={<PrayerRequest />} />
 
           {/* Auth */}
           <Route path="/signup" element={<Signup />} />
