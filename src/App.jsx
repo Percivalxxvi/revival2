@@ -25,6 +25,10 @@ import AdminLogin from "../auth/AdminLogin";
 import VerifyOTP from "../auth/VerifyOTP";
 
 import AdminDashboard from "../admin/AdminDashboard";
+import { ToastContainer } from "react-toastify";
+import Profile from "../pages/Profile";
+import Settings from "../pages/Settings";
+import CreatePost from "../pages/CreatePost";
 
 // 🔒 Admin Route Protection
 const RequireAdmin = ({ children }) => {
@@ -46,6 +50,7 @@ const Layout = ({ children }) => {
     <>
       {!isAdminRoute && <Navbar />}
       {children}
+      <ToastContainer position="top-center" autoClose={1000} theme="colored" />
     </>
   );
 };
@@ -64,6 +69,9 @@ const App = () => {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/events" element={<Events />} />
           <Route path="/prayers" element={<PrayerRequest />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/create-post" element={<CreatePost />} />
 
           {/* Auth */}
           <Route path="/signup" element={<Signup />} />

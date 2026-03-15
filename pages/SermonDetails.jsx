@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, User } from "lucide-react";
+import { Bookmark, BookmarkCheck } from "lucide-react";
 
 const PostDetails = ({ token }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [post, setPost] = useState(location.state?.post || null);
   const [loading, setLoading] = useState(!post);
+  const [isFavourited, setIsFavourited] = useState(false);
+  const [favLoading, setFavLoading] = useState(false);
 
   useEffect(() => {
     if (!post) {
@@ -15,6 +18,52 @@ const PostDetails = ({ token }) => {
       fetchPost(postId);
     }
   }, []);
+
+  // Check if already favourited when page loads
+  useEffect(() => {
+    const checkFavourite = async () => {
+      const token = localStorage.getItem("access_token");
+      if (!token || !post) return;
+      try {
+        const res = await fetch(
+          `https://revival-api-rzf5.onrender.com/favourites/me`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        const data = await res.json();
+        if (res.ok) {
+          const ids = (data.favourites ?? []).map((p) => p._id);
+          setIsFavourited(ids.includes(post._id));
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    checkFavourite();
+  }, [post]);
+
+  // Toggle handler
+  const toggleFavourite = async () => {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
+    setFavLoading(true);
+    try {
+      const res = await fetch(
+        `https://revival-api-rzf5.onrender.com/posts/${post._id}/favourite`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      const data = await res.json();
+      if (res.ok) setIsFavourited(data.favourited);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setFavLoading(false);
+    }
+  };
 
   const fetchPost = async (postId) => {
     try {
@@ -99,6 +148,28 @@ const PostDetails = ({ token }) => {
             />
             All Sermons
           </button>
+          {/* ✅ Favourite button */}
+          {localStorage.getItem("access_token") && (
+            <button
+              onClick={toggleFavourite}
+              disabled={favLoading}
+              className={`flex items-center gap-2 text-sm transition px-3 py-1.5 rounded-full border cursor-pointer mt-5 ${
+                isFavourited
+                  ? "border-amber-400/50 text-amber-400 bg-amber-400/10"
+                  : "border-white/10 text-white/40 hover:text-white hover:border-white/30"
+              }`}
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
+            >
+              {favLoading ? (
+                <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              ) : isFavourited ? (
+                <BookmarkCheck size={15} />
+              ) : (
+                <Bookmark size={15} />
+              )}
+              {isFavourited ? "Saved" : "Save"}
+            </button>
+          )}
         </div>
       </div>
 
@@ -130,8 +201,8 @@ const PostDetails = ({ token }) => {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.5 }}
-          className="font-display text-4xl sm:text-5xl md:text-5xl font-black text-white leading-[1.1] mb-8"
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          className="font-display text-3xl sm:text-4xl md:text-4xl font-black text-white leading-[1.1] mb-4"
+          style={{ fontFamily: "'DM Sans', serif", fontWeight: 500 }}
         >
           {post.title}
         </motion.h1>
@@ -141,7 +212,7 @@ const PostDetails = ({ token }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.25 }}
-          className="flex flex-wrap items-center gap-5 mb-10 pb-10 border-b border-white/10"
+          className="flex flex-wrap items-center gap-5 mb-5 pb-10 border-b border-white/10"
         >
           {post.author && (
             <div

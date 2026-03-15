@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { HeartHandshake, ArrowLeft, Send } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const PrayerRequest = () => {
   const [name, setName] = useState("");
@@ -12,10 +13,49 @@ const PrayerRequest = () => {
   const handleSubmit = async () => {
     if (!name.trim() || !request.trim()) return;
     setLoading(true);
-    // Replace with your actual API call
-    await new Promise((r) => setTimeout(r, 1000));
-    setSubmitted(true);
-    setLoading(false);
+
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const res = await fetch(
+        "https://revival-api-rzf5.onrender.com/prayer-requests",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+          body: JSON.stringify({ name, request }),
+        },
+      );
+
+      const data = await res.json();
+
+      //   if (!res.ok) {
+      //     console.log("Error detail:", data.detail);
+      //     alert(data.detail || "Failed to submit. Please try again.");
+      //     setLoading(false);
+      //     return;
+      //   }
+      if (!res.ok) {
+        console.log("FULL ERROR:", data);
+
+        const errorMsg = Array.isArray(data.detail)
+          ? data.detail.map((e) => e.msg).join(", ")
+          : data.detail || "Failed to submit";
+
+        toast.error(errorMsg);
+        setLoading(false);
+        return;
+      }
+      toast.success("Prayer request submitted 🙏");
+      setSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -135,7 +175,7 @@ const PrayerRequest = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={!name.trim() || !request.trim() || loading}
-                  className="font-body flex items-center justify-center gap-2 bg-[#150f33] text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-[#221a50] transition disabled:opacity-40 disabled:cursor-not-allowed mt-2"
+                  className="font-body flex items-center justify-center gap-2 bg-[#150f33] text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-[#221a50] transition disabled:opacity-40 disabled:cursor-not-allowed mt-2 cursor-pointer"
                 >
                   {loading ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

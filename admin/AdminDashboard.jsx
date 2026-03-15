@@ -12,14 +12,19 @@ import {
   Check,
   Search,
   Menu,
+  HeartHandshake,
+  CheckCircle,
+  Clock,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
+const BASE_URL = "https://revival-api-rzf5.onrender.com";
 
 /* ─────────────────────────────────────────────
    MANAGE POSTS VIEW
 ───────────────────────────────────────────── */
 const ManagePosts = () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -36,7 +41,7 @@ const ManagePosts = () => {
 
   const fetchPosts = async () => {
     try {
-      const res = await fetch("https://revival-api-rzf5.onrender.com/posts", {
+      const res = await fetch(`${BASE_URL}/posts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -51,7 +56,7 @@ const ManagePosts = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this post?")) return;
     try {
-      await fetch(`https://revival-api-rzf5.onrender.com/admin/posts/${id}`, {
+      await fetch(`${BASE_URL}/admin/posts/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -63,17 +68,14 @@ const ManagePosts = () => {
 
   const handleEditSave = async () => {
     try {
-      const res = await fetch(
-        `https://revival-api-rzf5.onrender.com/admin/posts/${editingPost._id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title: editTitle, content: editContent }),
+      const res = await fetch(`${BASE_URL}/admin/posts/${editingPost._id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({ title: editTitle, content: editContent }),
+      });
       if (res.ok) {
         setPosts((p) =>
           p.map((post) =>
@@ -91,17 +93,14 @@ const ManagePosts = () => {
 
   const handleCreate = async () => {
     try {
-      const res = await fetch(
-        "https://revival-api-rzf5.onrender.com/admin/posts",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title: newTitle, content: newContent }),
+      const res = await fetch(`${BASE_URL}/admin/posts`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({ title: newTitle, content: newContent }),
+      });
       const data = await res.json();
       if (res.ok) {
         setPosts((p) => [data, ...p]);
@@ -139,7 +138,6 @@ const ManagePosts = () => {
         </button>
       </div>
 
-      {/* Search */}
       <div className="relative mb-6">
         <Search
           size={16}
@@ -153,7 +151,6 @@ const ManagePosts = () => {
         />
       </div>
 
-      {/* Create Modal — slides up from bottom on mobile */}
       <AnimatePresence>
         {showCreate && (
           <motion.div
@@ -207,7 +204,6 @@ const ManagePosts = () => {
         )}
       </AnimatePresence>
 
-      {/* Edit Modal */}
       <AnimatePresence>
         {editingPost && (
           <motion.div
@@ -264,7 +260,6 @@ const ManagePosts = () => {
           <p className="text-gray-500 p-6 text-sm">No posts found.</p>
         ) : (
           <>
-            {/* Desktop table */}
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full text-left">
                 <thead className="bg-gray-50 border-b">
@@ -319,8 +314,6 @@ const ManagePosts = () => {
                 </tbody>
               </table>
             </div>
-
-            {/* Mobile cards */}
             <div className="sm:hidden divide-y">
               {filtered.map((post) => (
                 <motion.div
@@ -369,7 +362,7 @@ const ManagePosts = () => {
    MANAGE USERS VIEW
 ───────────────────────────────────────────── */
 const ManageUsers = () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -380,12 +373,9 @@ const ManageUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(
-        "https://revival-api-rzf5.onrender.com/admin/users",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const res = await fetch(`${BASE_URL}/admin/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
       if (res.ok) setUsers(data.users ?? data);
     } catch (err) {
@@ -398,7 +388,7 @@ const ManageUsers = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this user?")) return;
     try {
-      await fetch(`https://revival-api-rzf5.onrender.com/admin/users/${id}`, {
+      await fetch(`${BASE_URL}/admin/users/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -411,22 +401,18 @@ const ManageUsers = () => {
   const handleToggleRole = async (user) => {
     const newRole = user.role === "admin" ? "user" : "admin";
     try {
-      const res = await fetch(
-        `https://revival-api-rzf5.onrender.com/admin/users/${user._id}/role`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ role: newRole }),
+      const res = await fetch(`${BASE_URL}/admin/users/${user._id}/role`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-      );
-      if (res.ok) {
+        body: JSON.stringify({ role: newRole }),
+      });
+      if (res.ok)
         setUsers((u) =>
           u.map((u) => (u._id === user._id ? { ...u, role: newRole } : u)),
         );
-      }
     } catch (err) {
       console.error(err);
     }
@@ -454,7 +440,6 @@ const ManageUsers = () => {
           {users.length} Users
         </span>
       </div>
-
       <div className="relative mb-6">
         <Search
           size={16}
@@ -467,13 +452,11 @@ const ManageUsers = () => {
           className="w-full pl-9 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a58bff] text-sm"
         />
       </div>
-
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
         {filtered.length === 0 ? (
           <p className="text-gray-500 p-6 text-sm">No users found.</p>
         ) : (
           <>
-            {/* Desktop table */}
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full text-left">
                 <thead className="bg-gray-50 border-b">
@@ -512,11 +495,7 @@ const ManageUsers = () => {
                       <td className="px-6 py-4">
                         <button
                           onClick={() => handleToggleRole(user)}
-                          className={`text-xs px-2 py-1 rounded-full font-semibold transition cursor-pointer ${
-                            user.role === "admin"
-                              ? "bg-[#150f33] text-white hover:bg-[#1e175a]"
-                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                          }`}
+                          className={`text-xs px-2 py-1 rounded-full font-semibold transition cursor-pointer ${user.role === "admin" ? "bg-[#150f33] text-white hover:bg-[#1e175a]" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
                         >
                           {user.role ?? "user"}
                         </button>
@@ -539,8 +518,6 @@ const ManageUsers = () => {
                 </tbody>
               </table>
             </div>
-
-            {/* Mobile cards */}
             <div className="sm:hidden divide-y">
               {filtered.map((user) => (
                 <motion.div
@@ -556,11 +533,7 @@ const ManageUsers = () => {
                       </p>
                       <button
                         onClick={() => handleToggleRole(user)}
-                        className={`text-xs px-2 py-0.5 rounded-full font-semibold transition cursor-pointer ${
-                          user.role === "admin"
-                            ? "bg-[#150f33] text-white"
-                            : "bg-gray-100 text-gray-600"
-                        }`}
+                        className={`text-xs px-2 py-0.5 rounded-full font-semibold transition cursor-pointer ${user.role === "admin" ? "bg-[#150f33] text-white" : "bg-gray-100 text-gray-600"}`}
                       >
                         {user.role ?? "user"}
                       </button>
@@ -591,10 +564,241 @@ const ManageUsers = () => {
 };
 
 /* ─────────────────────────────────────────────
+   MANAGE PRAYER REQUESTS VIEW
+───────────────────────────────────────────── */
+const ManagePrayers = () => {
+  const token = localStorage.getItem("access_token");
+  const [prayers, setPrayers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all"); // all | pending | prayed
+  const [expandedPrayer, setExpandedPrayer] = useState(null);
+
+  useEffect(() => {
+    fetchPrayers();
+  }, []);
+
+  const fetchPrayers = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/admin/prayer-requests`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (res.ok) setPrayers(data.prayer_requests ?? data ?? []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this prayer request?")) return;
+    try {
+      await fetch(`${BASE_URL}/admin/prayer-requests/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setPrayers((p) => p.filter((pr) => pr._id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleToggleStatus = async (prayer) => {
+    const newStatus = prayer.status === "prayed" ? "pending" : "prayed";
+    try {
+      const res = await fetch(
+        `${BASE_URL}/admin/prayer-requests/${prayer._id}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: newStatus }),
+        },
+      );
+      if (res.ok) {
+        setPrayers((p) =>
+          p.map((pr) =>
+            pr._id === prayer._id ? { ...pr, status: newStatus } : pr,
+          ),
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const filtered = prayers
+    .filter((p) => filter === "all" || p.status === filter)
+    .filter(
+      (p) =>
+        p.name?.toLowerCase().includes(search.toLowerCase()) ||
+        p.request?.toLowerCase().includes(search.toLowerCase()),
+    );
+
+  const pendingCount = prayers.filter((p) => p.status === "pending").length;
+  const prayedCount = prayers.filter((p) => p.status === "prayed").length;
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-64 text-gray-400">
+        Loading prayer requests...
+      </div>
+    );
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold">Prayer Requests</h1>
+        <div className="flex items-center gap-2">
+          <span className="text-xs bg-amber-100 text-amber-600 px-2 py-1 rounded-full font-semibold">
+            {pendingCount} pending
+          </span>
+          <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full font-semibold">
+            {prayedCount} prayed
+          </span>
+        </div>
+      </div>
+
+      {/* Search + Filter */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        <div className="relative flex-1">
+          <Search
+            size={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+          />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by name or request..."
+            className="w-full pl-9 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#a58bff] text-sm"
+          />
+        </div>
+        <div className="flex gap-2">
+          {["all", "pending", "prayed"].map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-3 py-2 rounded-lg text-xs font-semibold transition capitalize ${filter === f ? "bg-[#150f33] text-white" : "bg-white border text-gray-500 hover:bg-gray-50"}`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-md overflow-hidden">
+        {filtered.length === 0 ? (
+          <div className="text-center py-12">
+            <HeartHandshake size={32} className="mx-auto text-gray-200 mb-3" />
+            <p className="text-gray-400 text-sm">No prayer requests found.</p>
+          </div>
+        ) : (
+          <div className="divide-y">
+            {filtered.map((prayer, i) => (
+              <motion.div
+                key={prayer._id ?? i}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="p-4 sm:p-5"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  {/* Left — name + preview */}
+                  <button
+                    onClick={() =>
+                      setExpandedPrayer(
+                        expandedPrayer === prayer._id ? null : prayer._id,
+                      )
+                    }
+                    className="flex-1 text-left min-w-0"
+                  >
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <p className="font-semibold text-sm text-gray-800">
+                        {prayer.name ?? "Anonymous"}
+                      </p>
+                      <span
+                        className={`text-xs px-2 py-0.5 rounded-full font-semibold ${prayer.status === "prayed" ? "bg-green-100 text-green-600" : "bg-amber-100 text-amber-600"}`}
+                      >
+                        {prayer.status === "prayed"
+                          ? "🙏 Prayed"
+                          : "⏳ Pending"}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-400 truncate">
+                      {prayer.request?.slice(0, 80)}
+                      {prayer.request?.length > 80 ? "..." : ""}
+                    </p>
+                    {prayer.created_at && (
+                      <p className="text-xs text-gray-300 mt-1">
+                        {new Date(prayer.created_at).toLocaleDateString(
+                          "en-US",
+                          { month: "short", day: "numeric", year: "numeric" },
+                        )}
+                      </p>
+                    )}
+                  </button>
+
+                  {/* Right — actions */}
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={() => handleToggleStatus(prayer)}
+                      title={
+                        prayer.status === "prayed"
+                          ? "Mark as pending"
+                          : "Mark as prayed"
+                      }
+                      className={`p-1.5 rounded-lg transition ${prayer.status === "prayed" ? "bg-green-50 text-green-500 hover:bg-green-100" : "bg-amber-50 text-amber-500 hover:bg-amber-100"}`}
+                    >
+                      {prayer.status === "prayed" ? (
+                        <CheckCircle size={16} />
+                      ) : (
+                        <Clock size={16} />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(prayer._id)}
+                      className="p-1.5 rounded-lg bg-red-50 text-red-400 hover:bg-red-100 transition"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Expanded body */}
+                <AnimatePresence>
+                  {expandedPrayer === prayer._id && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-3 pt-3 border-t border-gray-50">
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                          {prayer.request}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────────
    DASHBOARD OVERVIEW VIEW
 ───────────────────────────────────────────── */
 const DashboardOverview = ({ onNavigate }) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
   const [stats, setStats] = useState({ posts: 0, users: 0 });
   const [recentPosts, setRecentPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -602,15 +806,12 @@ const DashboardOverview = ({ onNavigate }) => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const res = await fetch(
-          "https://revival-api-rzf5.onrender.com/admin/dashboard",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+        const res = await fetch(`${BASE_URL}/admin/dashboard`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
-        );
+        });
         const data = await res.json();
         if (res.ok) {
           setStats({ posts: data.total_posts, users: data.total_users });
@@ -650,7 +851,6 @@ const DashboardOverview = ({ onNavigate }) => {
             Manage posts →
           </p>
         </motion.div>
-
         <motion.div
           whileHover={{ scale: 1.03 }}
           onClick={() => onNavigate("users")}
@@ -672,7 +872,6 @@ const DashboardOverview = ({ onNavigate }) => {
           <p className="text-gray-500 text-sm">No recent posts found.</p>
         ) : (
           <>
-            {/* Desktop table */}
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
@@ -702,8 +901,6 @@ const DashboardOverview = ({ onNavigate }) => {
                 </tbody>
               </table>
             </div>
-
-            {/* Mobile list */}
             <div className="sm:hidden divide-y">
               {recentPosts.map((post) => (
                 <div key={post._id} className="py-3">
@@ -724,16 +921,16 @@ const DashboardOverview = ({ onNavigate }) => {
 };
 
 /* ─────────────────────────────────────────────
-   ROOT ADMIN DASHBOARD (internal router)
+   ROOT ADMIN DASHBOARD
 ───────────────────────────────────────────── */
 const AdminDashboard = () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
   const navigate = useNavigate();
   const [view, setView] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     navigate("/login");
   };
 
@@ -745,6 +942,11 @@ const AdminDashboard = () => {
     },
     { id: "posts", label: "Manage Posts", icon: <FileText size={20} /> },
     { id: "users", label: "Users", icon: <Users size={20} /> },
+    {
+      id: "prayers",
+      label: "Prayer Requests",
+      icon: <HeartHandshake size={20} />,
+    },
   ];
 
   const handleNavClick = (id) => {
@@ -754,7 +956,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen flex bg-gray-100">
-      {/* Mobile backdrop */}
       <AnimatePresence>
         {sidebarOpen && (
           <motion.div
@@ -767,14 +968,8 @@ const AdminDashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
       <aside
-        className={`
-        fixed lg:static inset-y-0 left-0 z-30
-        w-64 bg-[#150f33] text-white flex flex-col p-6 shrink-0
-        transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-      `}
+        className={`fixed lg:static inset-y-0 left-0 z-30 w-64 bg-[#150f33] text-white flex flex-col p-6 shrink-0 transition-transform duration-300 ease-in-out ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
         <div className="flex items-center justify-between mb-10">
           <h2 className="text-2xl font-bold">Admin Panel</h2>
@@ -785,23 +980,17 @@ const AdminDashboard = () => {
             <X size={20} />
           </button>
         </div>
-
         <nav className="flex flex-col gap-2 flex-1">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition text-left ${
-                view === item.id
-                  ? "bg-white/10 text-[#a58bff]"
-                  : "hover:text-[#a58bff] cursor-pointer"
-              }`}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition text-left ${view === item.id ? "bg-white/10 text-[#a58bff]" : "hover:text-[#a58bff] cursor-pointer"}`}
             >
               {item.icon} {item.label}
             </button>
           ))}
         </nav>
-
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 text-red-400 hover:text-red-300 transition px-3 py-2 mt-4 cursor-pointer"
@@ -810,9 +999,7 @@ const AdminDashboard = () => {
         </button>
       </aside>
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Mobile topbar */}
         <header className="lg:hidden flex items-center justify-between bg-[#150f33] text-white px-4 py-3 sticky top-0 z-10 shrink-0">
           <button onClick={() => setSidebarOpen(true)} className="p-1">
             <Menu size={22} />
@@ -838,10 +1025,11 @@ const AdminDashboard = () => {
               transition={{ duration: 0.2 }}
             >
               {view === "dashboard" && (
-                <DashboardOverview token={token} onNavigate={setView} />
+                <DashboardOverview onNavigate={setView} />
               )}
-              {view === "posts" && <ManagePosts token={token} />}
-              {view === "users" && <ManageUsers token={token} />}
+              {view === "posts" && <ManagePosts />}
+              {view === "users" && <ManageUsers />}
+              {view === "prayers" && <ManagePrayers />}
             </motion.div>
           </AnimatePresence>
         </main>
