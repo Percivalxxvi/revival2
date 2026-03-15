@@ -159,33 +159,29 @@ const Navbar = () => {
 
                 {moreOpen && (
                   <div className="absolute top-10 left-0 bg-white shadow-lg rounded-md py-2 w-44 border border-gray-100">
-                    {token && (
-                      <Link
-                        to="/prayers"
-                        onClick={() => setMoreOpen(false)}
-                        className="block px-4 py-2 hover:bg-gray-100"
-                      >
-                        Prayers
-                      </Link>
-                    )}
-                    {token && (
-                      <Link
-                        to="/gallery"
-                        onClick={() => setMoreOpen(false)}
-                        className="block px-4 py-2 hover:bg-gray-100"
-                      >
-                        Gallery
-                      </Link>
-                    )}
-                    {token && (
-                      <Link
-                        to="/events"
-                        onClick={() => setMoreOpen(false)}
-                        className="block px-4 py-2 hover:bg-gray-100"
-                      >
-                        Events
-                      </Link>
-                    )}
+                    <Link
+                      to={token ? "/prayers" : "/login"}
+                      onClick={() => setMoreOpen(false)}
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Prayers
+                    </Link>
+
+                    <Link
+                      to="/gallery"
+                      onClick={() => setMoreOpen(false)}
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Gallery
+                    </Link>
+
+                    <Link
+                      to="/events"
+                      onClick={() => setMoreOpen(false)}
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Events
+                    </Link>
                     {!token && (
                       <Link
                         to="/signup"
@@ -370,21 +366,10 @@ const Navbar = () => {
             <Link to="/sermons" onClick={() => setOpen(false)}>
               Sermons
             </Link>
-            {token && (
-              <Link to="/prayers" onClick={() => setOpen(false)}>
-                Prayers
-              </Link>
-            )}
-            {token && (
-              <Link to="/gallery" onClick={() => setOpen(false)}>
-                Gallery
-              </Link>
-            )}
-            {token && (
-              <Link to="/events" onClick={() => setOpen(false)}>
-                Events
-              </Link>
-            )}
+            {/* Mobile */}
+            <Link to={token ? "/prayers" : "/login"}>Prayers</Link>
+            <a href="/gallery">Gallery</a>
+            <a href="/events">Events</a>
             {!token && (
               <Link to="/signup" onClick={() => setOpen(false)}>
                 Sign Up
