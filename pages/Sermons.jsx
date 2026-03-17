@@ -82,7 +82,7 @@ const AllPosts = ({ isAdmin, token }) => {
   };
 
   const openPost = (post) => {
-    navigate(`/posts/${post._id}`, {
+    navigate(`/sermons/${post._id}`, {
       state: {
         post: {
           _id: post._id,

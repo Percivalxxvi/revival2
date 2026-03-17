@@ -83,8 +83,19 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const authPages = ["/login", "/register", "/verify-otp", "/admin-login"];
+  const authPages = ["/login", "/signup", "/verify-otp", "/admin-login"];
+  const mainPages = [
+    "/",
+    "/about",
+    "/contact",
+    "/sermons",
+    "/prayers",
+    "/profile",
+    "/settings",
+    "/events",
+  ];
   const hideLinks = authPages.includes(location.pathname);
+  const hideLinks1 = mainPages.includes(location.pathname);
 
   return (
     <header className="lg:sticky fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
@@ -101,7 +112,15 @@ const Navbar = () => {
             Revival Network Commission
           </span>
         </div>
-
+        {!hideLinks1 && (
+          <Link
+            to="/"
+            style={{ color: location.pathname === "/" ? "#150f33" : "" }}
+            className="hover:text-[#150f33]"
+          >
+            Home
+          </Link>
+        )}
         {!hideLinks && (
           <>
             {/* ── DESKTOP MENU ── */}

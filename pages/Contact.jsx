@@ -37,7 +37,7 @@ const Contact = () => {
 
             <div className="flex items-center gap-4">
               <Mail className="text-[#150f33]" />
-              <span>info@revivalnetwork.org</span>
+              <span>revivalnetworkcommission365@gmail.com</span>
             </div>
 
             <div className="flex items-center gap-4">

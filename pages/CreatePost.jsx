@@ -109,7 +109,7 @@ const CreatePost = () => {
           className="bg-white rounded-3xl shadow-xl overflow-hidden"
         >
           {/* Top color strip */}
-          <div className="h-1.5 bg-linear-to-r from-[#150f33] to-[#553fc4]" />
+          <div className="h-1.5]" />
 
           <div className="p-8 sm:p-12">
             {/* Header */}
