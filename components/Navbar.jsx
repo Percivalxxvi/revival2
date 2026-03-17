@@ -385,30 +385,69 @@ const Navbar = () => {
             open ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <ul className="flex flex-col gap-4 px-6 py-6 text-sm font-medium text-gray-700">
-            <Link to="/" onClick={() => setOpen(false)}>
+          <ul className="flex flex-col gap-2 px-6 py-6 text-sm font-medium text-center text-gray-700">
+            <Link
+              className="border-b border-l border-r pb-2 border-gray-300"
+              to="/"
+              onClick={() => setOpen(false)}
+            >
               Home
             </Link>
-            <Link to="/about" onClick={() => setOpen(false)}>
+            <Link
+              className="border-b border-l border-r pb-2 border-gray-300"
+              to="/about"
+              onClick={() => setOpen(false)}
+            >
               About
             </Link>
-            <Link to="/contact" onClick={() => setOpen(false)}>
+            <Link
+              className="border-b border-l border-r pb-2 border-gray-300"
+              to="/contact"
+              onClick={() => setOpen(false)}
+            >
               Contact
             </Link>
-            <Link to="/sermons" onClick={() => setOpen(false)}>
+            <Link
+              className="border-b border-l border-r pb-2 border-gray-300"
+              to="/sermons"
+              onClick={() => setOpen(false)}
+            >
               Sermons
             </Link>
             {/* Mobile */}
-            <Link to={token ? "/prayers" : "/login"}>Prayers</Link>
-            <a href="/gallery">Gallery</a>
-            <a href="/events">Events</a>
+            <Link
+              className="border-b border-l border-r pb-2 border-gray-300"
+              to={token ? "/prayers" : "/login"}
+            >
+              Prayers
+            </Link>
+            <a
+              className="border-b border-l border-r pb-2 border-gray-300"
+              href="/gallery"
+            >
+              Gallery
+            </a>
+            <a
+              className="border-b border-l border-r pb-2 border-gray-300"
+              href="/events"
+            >
+              Events
+            </a>
             {!token && (
-              <Link to="/signup" onClick={() => setOpen(false)}>
+              <Link
+                className="border-b border-l border-r pb-2 border-gray-300"
+                to="/signup"
+                onClick={() => setOpen(false)}
+              >
                 Sign Up
               </Link>
             )}
             {!token && (
-              <Link to="/login" onClick={() => setOpen(false)}>
+              <Link
+                className="border-b border-l border-r pb-2 border-gray-300"
+                to="/login"
+                onClick={() => setOpen(false)}
+              >
                 Login
               </Link>
             )}
