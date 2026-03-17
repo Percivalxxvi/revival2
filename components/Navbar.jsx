@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
+import { Home } from "lucide-react";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -113,13 +114,25 @@ const Navbar = () => {
           </span>
         </div>
         {!hideLinks1 && (
-          <Link
-            to="/"
-            style={{ color: location.pathname === "/" ? "#150f33" : "" }}
-            className="hover:text-[#150f33]"
-          >
-            Home
-          </Link>
+          <>
+            {/* Desktop: text link */}
+            <Link
+              to="/"
+              style={{ color: location.pathname === "/" ? "#150f33" : "" }}
+              className="hidden md:block hover:text-[#150f33]"
+            >
+              Home
+            </Link>
+
+            {/* Mobile: icon link */}
+            <Link
+              to="/"
+              style={{ color: location.pathname === "/" ? "#150f33" : "" }}
+              className="block md:hidden hover:text-[#150f33]"
+            >
+              <Home className="h-6 w-6" />
+            </Link>
+          </>
         )}
         {!hideLinks && (
           <>
