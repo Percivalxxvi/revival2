@@ -8,7 +8,6 @@ import Totop from "../components/Totop";
 const Contact = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* <Navbar page="contact" /> */}
       <div className="lg:hidden flex h-20"></div>
       {/* Header */}
       <header className="bg-[#150f33] text-white py-10 lg:py-16">

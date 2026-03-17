@@ -68,7 +68,7 @@ const Home = () => {
         </motion.div>
       )}
       {/* ================= HERO SECTION ================= */}
-      <section className="pt-28 pb-20 bg-linear-to-b from-[#150f33] to-[#221a50] text-white">
+      <section className="lg:pt-28 pt-10 pb-20 bg-linear-to-b from-[#150f33] to-[#221a50] text-white">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <motion.div

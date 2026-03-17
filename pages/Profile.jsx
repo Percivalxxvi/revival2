@@ -11,6 +11,7 @@ import {
   BookOpen,
   CalendarDays,
   Trash,
+  Trash2,
 } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -132,7 +133,7 @@ const Profile = () => {
         .font-body { font-family: 'DM Sans', sans-serif; }
       `}</style>
 
-      <div className="lg:hidden flex h-20" />
+      {/* <div className="lg:hidden flex h-20" /> */}
       <div className="bg-linear-to-b from-[#150f33] to-[#221a50] pt-24 pb-28" />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 -mt-20 pb-16">
@@ -303,9 +304,9 @@ const Profile = () => {
                       </button>
                       <button
                         onClick={() => removeFavourite(post._id)}
-                        className="shrink-0 lg:hidden text-gray-300 hover:text-red-400 transition group-hover:opacity-100 text-xs font-body"
+                        className="shrink-0 lg:hidden text-red-400 hover:text-red-400 transition group-hover:opacity-100 text-xs font-body"
                       >
-                        <Trash />
+                        <Trash2 size={20} />
                       </button>
                     </motion.div>
                   ))}
@@ -379,7 +380,7 @@ const Profile = () => {
                           </p>
                         </div>
                         <div className="flex items-center gap-3 shrink-0 ml-3">
-                          {/* <span
+                          <span
                             className={`font-body text-xs px-2 py-0.5 rounded-full font-semibold ${
                               prayer.status === "prayed"
                                 ? "bg-green-100 text-green-600"
@@ -389,7 +390,7 @@ const Profile = () => {
                             {prayer.status === "prayed"
                               ? "🙏 Prayed"
                               : "⏳ Pending"}
-                          </span> */}
+                          </span>
                           {prayer.created_at && (
                             <span className="font-body text-xs text-gray-300 hidden sm:block">
                               {new Date(prayer.created_at).toLocaleDateString(

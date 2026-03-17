@@ -31,12 +31,6 @@ const PrayerRequest = () => {
 
       const data = await res.json();
 
-      //   if (!res.ok) {
-      //     console.log("Error detail:", data.detail);
-      //     alert(data.detail || "Failed to submit. Please try again.");
-      //     setLoading(false);
-      //     return;
-      //   }
       if (!res.ok) {
         console.log("FULL ERROR:", data);
 
@@ -69,7 +63,7 @@ const PrayerRequest = () => {
       <div className="lg:hidden flex h-20" />
 
       {/* Top banner */}
-      <div className="bg-linear-to-b from-[#150f33] to-[#221a50] pt-24 pb-32" />
+      <div className="bg-linear-to-b from-[#150f33] to-[#221a50] lg:pt-24 pb-32" />
 
       {/* Card */}
       <div className="max-w-2xl mx-auto px-6 -mt-20 pb-16">

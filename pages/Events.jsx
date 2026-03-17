@@ -15,7 +15,7 @@ const Events = () => {
       <div className="lg:hidden flex h-20" />
 
       {/* Top banner */}
-      <div className="bg-linear-to-b from-[#150f33] to-[#221a50] pt-24 pb-32" />
+      <div className="bg-linear-to-b from-[#150f33] to-[#221a50] lg:pt-24 pb-32" />
 
       {/* Card */}
       <div className="max-w-2xl mx-auto px-6 -mt-20  mb-5">

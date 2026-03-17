@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, SquareMenu } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { Home } from "lucide-react";
 
@@ -91,6 +91,7 @@ const Navbar = () => {
     "/contact",
     "/sermons",
     "/prayers",
+    "/gallery",
     "/profile",
     "/settings",
     "/events",
@@ -99,7 +100,7 @@ const Navbar = () => {
   const hideLinks1 = mainPages.includes(location.pathname);
 
   return (
-    <header className="lg:sticky fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
+    <header className="lg:sticky fixed top-0 left-0 w-full z-99 bg-white/90 backdrop-blur-md shadow-sm">
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2">
@@ -190,7 +191,7 @@ const Navbar = () => {
                 </button>
 
                 {moreOpen && (
-                  <div className="absolute top-10 left-0 bg-white shadow-lg rounded-md py-2 w-44 border border-gray-100">
+                  <div className="absolute top-10 left-0 bg-white rounded-md py-2 w-44">
                     <Link
                       to={token ? "/prayers" : "/login"}
                       onClick={() => setMoreOpen(false)}
@@ -244,12 +245,15 @@ const Navbar = () => {
 
               {/* Desktop Avatar Dropdown */}
               {token && (
-                <div className="relative" ref={avatarRef}>
+                <div
+                  className="relative bg-gray-100 rounded-full pr-3"
+                  ref={avatarRef}
+                >
                   <button
                     onClick={() => setAvatarOpen(!avatarOpen)}
                     className="flex items-center gap-2 hover:text-[#150f33] cursor-pointer"
                   >
-                    <div className="w-9 h-9 rounded-full bg-[#150f33] text-white flex items-center justify-center text-sm font-semibold">
+                    <div className="w-10 h-10 rounded-full bg-[#150f33] text-white flex items-center justify-center text-md font-semibold">
                       {initials}
                     </div>
                     <ChevronDown
@@ -259,7 +263,7 @@ const Navbar = () => {
                   </button>
 
                   {avatarOpen && (
-                    <div className="absolute right-0 top-12 bg-white shadow-lg rounded-md py-2 w-48 border border-gray-100 z-50">
+                    <div className="absolute right-0 top-12 bg-white rounded-md py-2 w-48 z-50">
                       <div className="px-4 py-2 border-b border-gray-100">
                         <p className="text-sm font-medium text-gray-800">
                           {username}
@@ -314,7 +318,7 @@ const Navbar = () => {
                     onClick={() => setMobileAvatarOpen(!mobileAvatarOpen)}
                     className="flex items-center gap-1"
                   >
-                    <div className="w-8 h-8 rounded-full bg-[#150f33] text-white flex items-center justify-center text-xs font-semibold">
+                    <div className="w-10 h-10 rounded-full bg-[#150f33] text-white flex items-center justify-center text-md font-semibold">
                       {initials}
                     </div>
                     <ChevronDown
@@ -371,7 +375,7 @@ const Navbar = () => {
 
               {/* Hamburger */}
               <button onClick={() => setOpen(!open)} className="text-gray-700">
-                {open ? <X size={26} /> : <Menu size={26} />}
+                {open ? <X size={35} /> : <Menu size={35} />}
               </button>
             </div>
           </>
@@ -418,18 +422,21 @@ const Navbar = () => {
             <Link
               className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
               to={token ? "/prayers" : "/login"}
+              onClick={() => setOpen(false)}
             >
               Prayers
             </Link>
             <a
               className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
               href="/gallery"
+              onClick={() => setOpen(false)}
             >
               Gallery
             </a>
             <a
               className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
               href="/events"
+              onClick={() => setOpen(false)}
             >
               Events
             </a>
