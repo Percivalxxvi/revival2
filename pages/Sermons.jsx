@@ -197,7 +197,7 @@ const AllPosts = ({ isAdmin, token }) => {
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h2 className="font-display text-3xl sm:text-4xl font-bold text-white leading-tight mb-4 group-hover:text-[#c4aeff] transition-colors">
+                      <h2 className="font-display text-xl sm:text-3xl font-bold text-white leading-tight mb-4 group-hover:text-[#c4aeff] transition-colors">
                         {featured.title}
                       </h2>
                       <p className="font-body text-white/50 text-base leading-relaxed line-clamp-3 mb-6">
