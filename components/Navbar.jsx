@@ -385,30 +385,30 @@ const Navbar = () => {
             open ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <ul className="flex flex-col gap-2 px-6 py-6 text-sm font-medium text-center text-gray-700">
+          <ul className="flex flex-col gap-2 px-6 py-2 text-sm font-medium text-center text-gray-700 shadow-4xl">
             <Link
-              className="border-b border-l border-r pb-2 border-gray-300"
+              className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
               to="/"
               onClick={() => setOpen(false)}
             >
               Home
             </Link>
             <Link
-              className="border-b border-l border-r pb-2 border-gray-300"
+              className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
               to="/about"
               onClick={() => setOpen(false)}
             >
               About
             </Link>
             <Link
-              className="border-b border-l border-r pb-2 border-gray-300"
+              className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
               to="/contact"
               onClick={() => setOpen(false)}
             >
               Contact
             </Link>
             <Link
-              className="border-b border-l border-r pb-2 border-gray-300"
+              className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
               to="/sermons"
               onClick={() => setOpen(false)}
             >
@@ -416,26 +416,26 @@ const Navbar = () => {
             </Link>
             {/* Mobile */}
             <Link
-              className="border-b border-l border-r pb-2 border-gray-300"
+              className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
               to={token ? "/prayers" : "/login"}
             >
               Prayers
             </Link>
             <a
-              className="border-b border-l border-r pb-2 border-gray-300"
+              className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
               href="/gallery"
             >
               Gallery
             </a>
             <a
-              className="border-b border-l border-r pb-2 border-gray-300"
+              className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
               href="/events"
             >
               Events
             </a>
             {!token && (
               <Link
-                className="border-b border-l border-r pb-2 border-gray-300"
+                className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
                 to="/signup"
                 onClick={() => setOpen(false)}
               >
@@ -444,7 +444,7 @@ const Navbar = () => {
             )}
             {!token && (
               <Link
-                className="border-b border-l border-r pb-2 border-gray-300"
+                className="border-b border-l border-r pb-2 border-gray-400 rounded-b-md"
                 to="/login"
                 onClick={() => setOpen(false)}
               >
