@@ -109,7 +109,7 @@ const AllPosts = ({ isAdmin, token }) => {
       {/* Google Font inject */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap');
-        .font-display { font-family: 'Playfair Display', Georgia, serif; }
+        // .font-display { font-family: 'Playfair Display', Georgia, serif; }
         .font-body { font-family: 'DM Sans', sans-serif; }
         .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
