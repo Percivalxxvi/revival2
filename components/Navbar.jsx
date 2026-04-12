@@ -90,6 +90,7 @@ const Navbar = () => {
     "/about",
     "/contact",
     "/sermons",
+    "/sermons/:id",
     "/prayers",
     "/gallery",
     "/profile",
